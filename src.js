@@ -3,10 +3,6 @@ function loadGame() {
 	let p = new DOMParser();
 	r.open('GET', 'game.xml', false);
 	r.send(null);
-	console.log(r.responseText);
-	dom = p.parseFromString(r.responseText, 'text/xml');
-	console.log(dom);
-	return dom;
+	return p.parseFromString(r.responseText, 'text/xml');
 }
-
 game = loadGame();
