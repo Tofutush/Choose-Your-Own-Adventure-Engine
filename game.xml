@@ -6,18 +6,47 @@
 		<text>world</text>
 	</display>
 	<options>
-		<option>first outcome
-			<outcome type="fail">
+		<option>
+			<display>
+				<text>first outcome</text>
+				<img>1.png</img>
+			</display>
+			<outcome type="dead">
 				<display>
 					<img>3.png</img>
 					<text>u fail</text>
 				</display>
 			</outcome>
 		</option>
-		<option>second
+		<option>
+			<display>
+				<text>second</text>
+			</display>
 			<outcome type="game">
 				<display>
 					<text>haha</text>
+				</display>
+				<options>
+					<option>
+						<display>
+							<text>haha</text>
+						</display>
+						<outcome type="dead">
+							<display>
+								<img>2.png</img>
+							</display>
+						</outcome>
+					</option>
+				</options>
+			</outcome>
+		</option>
+		<option>
+			<display>
+				<text>third</text>
+			</display>
+			<outcome type="dead">
+				<display>
+					<text>hehe</text>
 				</display>
 			</outcome>
 		</option>
