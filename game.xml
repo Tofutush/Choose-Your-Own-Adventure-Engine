@@ -1,15 +1,15 @@
-<game>
+<outcome type="game">
 	<display>
-		<img src="comic/1.png"/>
+		<img>1.png</img>
 		<text>hello</text>
-		<img src="comic/2.png"/>
+		<img>2.png</img>
 		<text>world</text>
 	</display>
 	<options>
-		<option>first
+		<option>first outcome
 			<outcome type="fail">
 				<display>
-					<img src="img/3.png"/>
+					<img>3.png</img>
 					<text>u fail</text>
 				</display>
 			</outcome>
@@ -22,4 +22,4 @@
 			</outcome>
 		</option>
 	</options>
-</game>
+</outcome>
