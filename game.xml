@@ -1,0 +1,25 @@
+<game>
+	<display>
+		<img src="comic/1.png"/>
+		<text>hello</text>
+		<img src="comic/2.png"/>
+		<text>world</text>
+	</display>
+	<options>
+		<option>first
+			<outcome type="fail">
+				<display>
+					<img src="img/3.png"/>
+					<text>u fail</text>
+				</display>
+			</outcome>
+		</option>
+		<option>second
+			<outcome type="game">
+				<display>
+					<text>haha</text>
+				</display>
+			</outcome>
+		</option>
+	</options>
+</game>
