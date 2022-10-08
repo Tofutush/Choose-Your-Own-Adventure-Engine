@@ -18,13 +18,35 @@ function loadXML(url, type) {
 	return p.parseFromString(r.responseText, 'text/xml').children[0];
 }
 
-//DEEP AND SHALLOW COPY PROBLEM!!!
+/*DEEP AND SHALLOW COPY PROBLEM!!!
 
-function painstakinglyTransferGameFromLastArgToTheFirst(f, l) {
-	f.dom = l.dom;
-	f.display = l.display;
-	f.options = l.options;
-}
+// function painstakinglyTransferGameFromLastArgToTheFirst(f, l) {
+// 	f.dom = l.dom.cloneNode(true);
+// 	f.display.dom = l.display.dom.cloneNode(true);
+// 	//f.options = l.options;
+// }
+
+// code from https://gist.github.com/GeorgeGkas/36f7a7f9a9641c2115a11d58233ebed2
+// function clone(instance) {
+// 	return Object.assign(
+// 		Object.create(
+// 			// Set the prototype of the new object to the prototype of the instance.
+// 			// Used to allow new object behave like class instance.
+// 			Object.getPrototypeOf(instance),
+// 		),
+// 		// Prevent shallow copies of nested structures like arrays, etc
+// 		JSON.parse(JSON.stringify(instance)),
+//  	);
+// }
+
+// code from https://stackoverflow.com/questions/16024940/how-do-i-clone-a-javascript-class-instance
+// function clone2(obj) {
+//   return Object.create(
+//     Object.getPrototypeOf(obj),
+//     Object.getOwnPropertyDescriptors(obj)
+//   );
+// }
+*/
 
 function initGame(game) {
 	fstGame.play();
@@ -38,13 +60,7 @@ function Outcome(dom) {
 	//this.init();
 }
 
-// Outcome.prototype.init = function() {
-// 	this.display = new Display(this.dom.children[0], page.display);
-// 	console.log(this.type);
-// 	this.setOptions();
-// };
-
-Outcome.prototype.init = function() {
+Outcome.prototype.init = function(pre) {
 	switch(this.type) {
 		case 'game':
 			this.display = new Display(this.dom.children[0], page.display);
@@ -55,11 +71,13 @@ Outcome.prototype.init = function() {
 			this.options = new Options(deadOptions);
 			break;
 		case 'back':
-			this.dom = preGame.dom;
-			this.display = preGame.display;
-			this.options = preGame.options;
+			this.type = 'game';
+			this.dom = pre.dom;
+			this.display = pre.display;
+			this.options = pre.options;
 			break;
 		case 'over':
+			this.type = 'game';
 			this.dom = fstGame.dom;
 			this.display = fstGame.display;
 			this.options = fstGame.options;
@@ -70,11 +88,29 @@ Outcome.prototype.init = function() {
 };
 
 Outcome.prototype.play = function() {
-	painstakinglyTransferGameFromLastArgToTheFirst(preGame, nowGame);
-	painstakinglyTransferGameFromLastArgToTheFirst(nowGame, this);
+	/*
+	// painstakinglyTransferGameFromLastArgToTheFirst(preGame, nowGame);
+	// painstakinglyTransferGameFromLastArgToTheFirst(nowGame, this);
+
 	// preGame = nowGame;
 	// nowGame = this;
-	this.init();
+
+	// preGame = Object.assign(Object.create(Object.getPrototypeOf(nowGame)), nowGame);
+	// nowGame = Object.assign(Object.create(Object.getPrototypeOf(this)), this);
+
+	// preGame = clone(nowGame);
+	// nowGame = clone(this);
+
+	// preGame = clone2(nowGame);
+	// nowGame = clone2(this);
+
+	// preGame = deepClone(nowGame);
+	// nowGame = deepClone(this);
+	*/
+
+	this.init(preGame);
+	preGame = nowGame;
+	nowGame = this;
 	this.display.show();
 	this.options.show();
 };
