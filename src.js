@@ -142,6 +142,7 @@ Display.prototype.init = function() {
 				this.elts.push(this.parseText(children[z]));
 				break;
 			default:
+				console.log(children[z+1].innerText);
 				throw new Error(`unidentified display tag ${children[z].tagName}`);
 		}
 	}

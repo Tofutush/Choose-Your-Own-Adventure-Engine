@@ -1,40 +1,53 @@
 <outcome type="game">
 	<display>
-		<img>1.png</img>
-		<text>hello</text>
-		<img>2.png</img>
-		<text>world</text>
+		<text>ur parents r away from home! what will u do?</text>
 	</display>
 	<options>
 		<option>
 			<display>
-				<text>first outcome</text>
-				<img>1.png</img>
-			</display>
-			<outcome type="dead">
-				<display>
-					<img>3.png</img>
-					<text>u fail</text>
-				</display>
-			</outcome>
-		</option>
-		<option>
-			<display>
-				<text>second</text>
+				<text>invite friends over</text>
 			</display>
 			<outcome type="game">
 				<display>
-					<text>haha</text>
+					<text>what kind of friends?</text>
 				</display>
 				<options>
 					<option>
 						<display>
-							<text>haha</text>
+							<text>friends from school</text>
 						</display>
 						<outcome type="dead">
 							<display>
-								<img>2.png</img>
+								<text>you invite friends from school and play.</text>
 							</display>
+						</outcome>
+					</option>
+					<option>
+						<display>
+							<text>friends on the block</text>
+						</display>
+						<outcome type="dead">
+							<display>
+								<text>but then youll have to go outside!</text>
+							</display>
+						</outcome>
+					</option>
+					<option>
+						<display>
+							<text>your bf/gf</text>
+						</display>
+						<outcome type="game">
+							<display>
+								<text>you invite your bf/gf over. what will u do?</text>
+							</display>
+							<options>
+								<option>
+									<display><text>go to bed.</text></display>
+									<outcome type="dead">
+										<display><text>u go 2 bed.</text></display>
+									</outcome>
+								</option>
+							</options>
 						</outcome>
 					</option>
 				</options>
@@ -42,12 +55,26 @@
 		</option>
 		<option>
 			<display>
-				<text>third</text>
+				<text>go outside and play</text>
 			</display>
 			<outcome type="dead">
-				<display>
-					<text>hehe</text>
-				</display>
+				<display><text>u go outside</text></display>
+			</outcome>
+		</option>
+		<option>
+			<display>
+				<text>stay indoors and play</text>
+			</display>
+			<outcome type="game">
+				<display><text>what will u do</text></display>
+				<options>
+					<option>
+						<display><text>commit arson</text></display>
+						<outcome type="dead">
+							<display><text>u burn urself 2 death</text></display>
+						</outcome>
+					</option>
+				</options>
 			</outcome>
 		</option>
 	</options>

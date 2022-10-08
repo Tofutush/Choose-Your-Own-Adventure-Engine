@@ -4,19 +4,11 @@
 			<text>Back.</text>
 		</display>
 		<outcome type="back"/>
-			<!--<display>
-				<text>back.</text>
-			</display>
-		</outcome>-->
 	</option>
 	<option>
 		<display>
 			<text>Start over.</text>
 		</display>
 		<outcome type="over"/>
-			<!--<display>
-				<text>startover.</text>
-			</display>
-		</outcome>-->
 	</option>
 </options>
