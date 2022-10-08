@@ -1,12 +1,11 @@
-var fstGame = {},
-	nowGame = {},
-	preGame = {};
-var page = {
+var fstGame = {}, // the first game, used in the "start over" option
+	nowGame = {}, // the game were playing right now (do we even need this?)
+	preGame = {}; // the previous game, used in the "back" option
+var page = { // stuff on document,body
 	display: document.getElementById('display'),
 	options: document.getElementById('options')
 };
-const deadOptions = loadXML('deadOptions.xml');
-//loadXML('deadOptions.xml', 'options');
+const deadOptions = loadXML('deadOptions.xml'); // do we load it like that? or do we load them as separate options?
 
 function elt(type,props,...children){let dom=document.createElement(type);if(props)Object.assign(dom,props);for(let child of children){if(typeof child!="string")dom.appendChild(child);else dom.appendChild(document.createTextNode(child));}return(dom);}
 
@@ -18,7 +17,7 @@ function loadXML(url, type) {
 	return p.parseFromString(r.responseText, 'text/xml').children[0];
 }
 
-/*DEEP AND SHALLOW COPY PROBLEM!!!
+/*DEEP AND SHALLOW COPY PROBLEM!!! presumed solved. i dont dare delete the code yet
 
 // function painstakinglyTransferGameFromLastArgToTheFirst(f, l) {
 // 	f.dom = l.dom.cloneNode(true);
@@ -48,7 +47,7 @@ function loadXML(url, type) {
 // }
 */
 
-function initGame(game) {
+function initGame(game) { // do we need a one-line function like this?
 	fstGame.play();
 }
 
@@ -57,24 +56,24 @@ function initGame(game) {
 function Outcome(dom) {
 	this.dom = dom;
 	this.type = dom.getAttribute('type');
-	//this.init();
 }
 
-Outcome.prototype.init = function(pre) {
+Outcome.prototype.init = function() {
 	switch(this.type) {
 		case 'game':
 			this.display = new Display(this.dom.children[0], page.display);
-			this.options = new Options(this.dom.children[1]);
+			this.options = new Options(this.dom.children[1]); // if its a game, load options. do we load deadOptions or not
 			break;
 		case 'dead':
 			this.display = new Display(this.dom.children[0], page.display);
-			this.options = new Options(deadOptions);
+			//this.options = new Options(deadOptions); // if its a dead end, load deadOptions
+			this.options = new Options();
 			break;
-		case 'back':
+		case 'back': // cheesy way of dealing with this stuff. seems to work tho
 			this.type = 'game';
-			this.dom = pre.dom;
-			this.display = pre.display;
-			this.options = pre.options;
+			this.dom = preGame.dom;
+			this.display = preGame.display;
+			this.options = preGame.options;
 			break;
 		case 'over':
 			this.type = 'game';
@@ -88,27 +87,7 @@ Outcome.prototype.init = function(pre) {
 };
 
 Outcome.prototype.play = function() {
-	/*
-	// painstakinglyTransferGameFromLastArgToTheFirst(preGame, nowGame);
-	// painstakinglyTransferGameFromLastArgToTheFirst(nowGame, this);
-
-	// preGame = nowGame;
-	// nowGame = this;
-
-	// preGame = Object.assign(Object.create(Object.getPrototypeOf(nowGame)), nowGame);
-	// nowGame = Object.assign(Object.create(Object.getPrototypeOf(this)), this);
-
-	// preGame = clone(nowGame);
-	// nowGame = clone(this);
-
-	// preGame = clone2(nowGame);
-	// nowGame = clone2(this);
-
-	// preGame = deepClone(nowGame);
-	// nowGame = deepClone(this);
-	*/
-
-	this.init(preGame);
+	this.init();
 	preGame = nowGame;
 	nowGame = this;
 	this.display.show();
@@ -119,11 +98,11 @@ Outcome.prototype.play = function() {
 
 function Display(dom, parent) {
 	this.dom = dom;
-	this.parent = parent;
+	this.parent = parent; // parent is the element the display will be displayed on
 	this.init();
 }
 
-Display.prototype.parseImg = function(img) {
+Display.prototype.parseImg = function(img) { // do we even need these two one-line functions
 	return elt('img', {src: 'comic/'+img.firstChild.nodeValue});
 };
 
@@ -175,7 +154,7 @@ Option.prototype.init = function() {
 //Options
 
 function Options(dom) {
-	this.dom = dom;
+	this.dom = dom || deadOptions;
 	this.init();
 }
 
@@ -187,9 +166,13 @@ Options.prototype.init = function() {
 	};
 };
 
+Options.prototype.addOption = function(o) {
+	this.elts.push(new Option(o));
+};
+
 Options.prototype.show = function() {
 	page.options.innerHTML = '';
 	for(z = 0; z < this.elts.length; z++) {
 		page.options.appendChild(this.elts[z].button);
 	};
-}
+};

@@ -47,6 +47,10 @@
 										<display><text>u go 2 bed.</text></display>
 									</outcome>
 								</option>
+								<option>
+									<display><text>bak</text></display>
+									<outcome type="back"/>
+								</option>
 							</options>
 						</outcome>
 					</option>
