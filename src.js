@@ -25,7 +25,7 @@ function initGame(game) {
 function Outcome(dom) {
 	this.dom = dom;
 	this.type = dom.getAttribute('type');
-	this.init();
+	//this.init();
 }
 
 // Outcome.prototype.init = function() {
@@ -45,10 +45,14 @@ Outcome.prototype.init = function() {
 			this.options = new Options(deadOptions);
 			break;
 		case 'back':
-			console.log('back reached');
+			this.dom = preGame.dom;
+			this.display = preGame.display;
+			this.options = preGame.options;
 			break;
 		case 'over':
-			console.log('over reached');
+			this.dom = fstGame.dom;
+			this.display = fstGame.display;
+			this.options = fstGame.options;
 			break;
 		default:
 			throw new Error(`unidentified Outcome type ${this.type}`);
@@ -58,8 +62,9 @@ Outcome.prototype.init = function() {
 Outcome.prototype.play = function() {
 	preGame = nowGame;
 	nowGame = this;
-	nowGame.display.show();
-	//nowGame.options.show();
+	this.init();
+	this.display.show();
+	this.options.show();
 };
 
 //Display
