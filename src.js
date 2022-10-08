@@ -28,17 +28,20 @@ function Outcome(dom) {
 	this.init();
 }
 
-Outcome.prototype.init = function() {
-	this.display = new Display(this.dom.children[0], page.display);
-	this.setOptions();
-};
+// Outcome.prototype.init = function() {
+// 	this.display = new Display(this.dom.children[0], page.display);
+// 	console.log(this.type);
+// 	this.setOptions();
+// };
 
-Outcome.prototype.setOptions = function() {
+Outcome.prototype.init = function() {
 	switch(this.type) {
 		case 'game':
+			this.display = new Display(this.dom.children[0], page.display);
 			this.options = new Options(this.dom.children[1]);
 			break;
 		case 'dead':
+			this.display = new Display(this.dom.children[0], page.display);
 			this.options = new Options(deadOptions);
 			break;
 		case 'back':
@@ -56,7 +59,7 @@ Outcome.prototype.play = function() {
 	preGame = nowGame;
 	nowGame = this;
 	nowGame.display.show();
-	nowGame.options.show();
+	//nowGame.options.show();
 };
 
 //Display
