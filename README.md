@@ -11,7 +11,7 @@
 
 # ive a huge problem dude. the game keeps loading and its never gonna stop. we cant let the outcome initialize until its needed. or itll never stop like a dead loop! (this problem is maybe solved)
 
-# ive another problem. the deep / shallow copy problem. b/c of shallow copy, preGame and nowGame points to the same thing. no we want to shallow copy that (maybe solved again!!)
+# ive another problem. the deep / shallow copy problem. b/c of shallow copy, preGame and nowGame points to the same thing. no we want to deep copy that (maybe solved again!!)
 
 # until now the project is pretty well! might want some more features:
 - able to not use <text> tags when theres only one line text
