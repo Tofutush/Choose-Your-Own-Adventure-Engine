@@ -1,4 +1,6 @@
-var fstGame, nowGame, preGame;
+var fstGame = {},
+	nowGame = {},
+	preGame = {};
 var page = {
 	display: document.getElementById('display'),
 	options: document.getElementById('options')
@@ -14,6 +16,14 @@ function loadXML(url, type) {
 	r.open('GET', url, false);
 	r.send(null);
 	return p.parseFromString(r.responseText, 'text/xml').children[0];
+}
+
+//DEEP AND SHALLOW COPY PROBLEM!!!
+
+function painstakinglyTransferGameFromLastArgToTheFirst(f, l) {
+	f.dom = l.dom;
+	f.display = l.display;
+	f.options = l.options;
 }
 
 function initGame(game) {
@@ -60,8 +70,10 @@ Outcome.prototype.init = function() {
 };
 
 Outcome.prototype.play = function() {
-	preGame = nowGame;
-	nowGame = this;
+	painstakinglyTransferGameFromLastArgToTheFirst(preGame, nowGame);
+	painstakinglyTransferGameFromLastArgToTheFirst(nowGame, this);
+	// preGame = nowGame;
+	// nowGame = this;
 	this.init();
 	this.display.show();
 	this.options.show();
@@ -118,6 +130,9 @@ Option.prototype.init = function() {
 	this.display = new Display(this.dom.children[0], this.button);
 	this.display.show();
 	this.outcome = new Outcome(this.dom.children[1]);
+	this.button.addEventListener('click', () => {
+		this.outcome.play();
+	});
 };
 
 //Options
@@ -132,7 +147,7 @@ Options.prototype.init = function() {
 	let children = this.dom.children;
 	for(child of children) {
 		this.elts.push(new Option(child));
-	}
+	};
 };
 
 Options.prototype.show = function() {

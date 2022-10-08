@@ -7,6 +7,8 @@
 
 ## every time an Option leads to an Outcome type game it sets nowGame to the Outcome and preGame to the previous game (for returning)
 
-### but there might be some probs...
+### but there might be some probs... (stated below: deep / shallow copy)
 
-# ive a huge problem dude. the game keeps loading and its never gonna stop. we cant let the outcome initialize until its needed. or itll never stop like a dead loop!
+# ive a huge problem dude. the game keeps loading and its never gonna stop. we cant let the outcome initialize until its needed. or itll never stop like a dead loop! (this problem is maybe solved)
+
+# ive another problem. the deep / shallow copy problem. b/c of shallow copy, preGame and nowGame points to the same thing. no we want to shallow copy that
