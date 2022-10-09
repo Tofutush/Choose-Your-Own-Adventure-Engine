@@ -53,8 +53,9 @@ function initGame(game) { // do we need a one-line function like this?
 
 //Outcome
 
-function Outcome(dom) {
+function Outcome(dom, parent) {
 	this.dom = dom;
+	this.parent = parent; // parent can be the preceding game
 	this.type = dom.getAttribute('type');
 }
 
@@ -62,24 +63,29 @@ Outcome.prototype.init = function() {
 	switch(this.type) {
 		case 'game':
 			this.display = new Display(this.dom.children[0], page.display);
-			this.options = new Options(this.dom.children[1]); // if its a game, load options. do we load deadOptions or not
+			this.options = new Options(this.dom.children[1], this); // if its a game, load options. do we load deadOptions or not
+			console.log('outcome\'s options\' parent', this.options.parent);
 			break;
 		case 'dead':
 			this.display = new Display(this.dom.children[0], page.display);
 			//this.options = new Options(deadOptions); // if its a dead end, load deadOptions
-			this.options = new Options();
+			this.options = new Options(false, this); // and now the Options class automatically loads deadOptions!
 			break;
 		case 'back': // cheesy way of dealing with this stuff. seems to work tho
 			this.type = 'game';
-			this.dom = preGame.dom;
-			this.display = preGame.display;
-			this.options = preGame.options;
+			// this.dom = preGame.dom;
+			// this.display = preGame.display;
+			// this.options = preGame.options;
+			this.dom = this.parent.dom;
+			this.display = this.parent.display;
+			this.options = this.parent.options;
 			break;
 		case 'over':
 			this.type = 'game';
 			this.dom = fstGame.dom;
 			this.display = fstGame.display;
 			this.options = fstGame.options;
+			// fstGame.play();
 			break;
 		default:
 			throw new Error(`unidentified Outcome type ${this.type}`);
@@ -90,6 +96,7 @@ Outcome.prototype.play = function() {
 	this.init();
 	preGame = nowGame;
 	nowGame = this;
+	//console.log(this.parent);
 	this.display.show();
 	this.options.show();
 };
@@ -136,8 +143,9 @@ Display.prototype.show = function() {
 
 //Option
 
-function Option(dom) {
+function Option(dom, parent) {
 	this.dom = dom;
+	this.parent = parent; // parent is the Options object
 	this.init();
 }
 
@@ -145,7 +153,8 @@ Option.prototype.init = function() {
 	this.button = elt('button');
 	this.display = new Display(this.dom.children[0], this.button);
 	this.display.show();
-	this.outcome = new Outcome(this.dom.children[1]);
+	this.outcome = new Outcome(this.dom.children[1], this.parent.parent.parent);
+	//console.log(this, this.parent, this.parent.parent, this.parent.parent.parent);
 	this.button.addEventListener('click', () => {
 		this.outcome.play();
 	});
@@ -153,8 +162,10 @@ Option.prototype.init = function() {
 
 //Options
 
-function Options(dom) {
+function Options(dom, parent) {
 	this.dom = dom || deadOptions;
+	this.parent = parent; // parent is the Outcome object
+	console.log((this.dom == deadOptions ? 'deadOptions' : 'aliveOptions'), this.parent);
 	this.init();
 }
 
@@ -162,12 +173,12 @@ Options.prototype.init = function() {
 	this.elts = [];
 	let children = this.dom.children;
 	for(child of children) {
-		this.elts.push(new Option(child));
+		this.elts.push(new Option(child, this));
 	};
 };
 
 Options.prototype.addOption = function(o) {
-	this.elts.push(new Option(o));
+	this.elts.push(new Option(o, this));
 };
 
 Options.prototype.show = function() {
