@@ -57,6 +57,7 @@ function Outcome(dom, parent) {
 	this.dom = dom;
 	this.parent = parent; // parent can be the preceding game
 	this.type = dom.getAttribute('type');
+	//if(this.type == 'back') throw new Error('thrown');
 }
 
 Outcome.prototype.init = function() {
@@ -64,7 +65,7 @@ Outcome.prototype.init = function() {
 		case 'game':
 			this.display = new Display(this.dom.children[0], page.display);
 			this.options = new Options(this.dom.children[1], this); // if its a game, load options. do we load deadOptions or not
-			console.log('outcome\'s options\' parent', this.options.parent);
+			//console.log('outcome\'s options\' parent', this.options.parent);
 			break;
 		case 'dead':
 			this.display = new Display(this.dom.children[0], page.display);
@@ -73,12 +74,13 @@ Outcome.prototype.init = function() {
 			break;
 		case 'back': // cheesy way of dealing with this stuff. seems to work tho
 			this.type = 'game';
-			// this.dom = preGame.dom;
-			// this.display = preGame.display;
-			// this.options = preGame.options;
-			this.dom = this.parent.dom;
-			this.display = this.parent.display;
-			this.options = this.parent.options;
+			this.dom = preGame.dom;
+			this.display = preGame.display;
+			this.options = preGame.options;
+			// console.log(this, this.parent);
+			// this.dom = this.parent.dom;
+			// this.display = this.parent.display;
+			// this.options = this.parent.options;
 			break;
 		case 'over':
 			this.type = 'game';
@@ -154,7 +156,7 @@ Option.prototype.init = function() {
 	this.display = new Display(this.dom.children[0], this.button);
 	this.display.show();
 	this.outcome = new Outcome(this.dom.children[1], this.parent.parent.parent);
-	//console.log(this, this.parent, this.parent.parent, this.parent.parent.parent);
+	//console.log('this', this, 'parent', this.parent, 'double parent', this.parent.parent, 'triple parent', this.parent.parent.parent);
 	this.button.addEventListener('click', () => {
 		this.outcome.play();
 	});
@@ -165,7 +167,7 @@ Option.prototype.init = function() {
 function Options(dom, parent) {
 	this.dom = dom || deadOptions;
 	this.parent = parent; // parent is the Outcome object
-	console.log((this.dom == deadOptions ? 'deadOptions' : 'aliveOptions'), this.parent);
+	//console.log((this.dom == deadOptions ? 'deadOptions' : 'aliveOptions'), this.parent.parent);
 	this.init();
 }
 
