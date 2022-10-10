@@ -192,7 +192,7 @@ Options.prototype.show = function() {
 
 // code from https://www.30secondsofcode.org/articles/s/js-data-structures-tree
 
-class TreeNode {
+class Node {
 	constructor(key, value = key, parent = null) {
 		this.key = key;
 		this.value = value;
@@ -230,8 +230,7 @@ class Tree {
 	insert(parentNodeKey, key, value = key) {
 		for (let node of this.preOrderTraversal()) {
 			if (node.key === parentNodeKey) {
-				node.children.push(new TreeNode(key, value, node));
-				return true;
+				return node.children.push(new TreeNode(key, value, node));
 			}
 		}
 		return false;
