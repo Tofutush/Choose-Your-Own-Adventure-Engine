@@ -5,6 +5,8 @@ var page = { // stuff on document,body
 	display: document.getElementById('display'),
 	options: document.getElementById('options')
 };
+var globalRecency = 0; // recency (is this even a word?) is how you count what scene has been last reached. the larger the number, the more recent. STILL UNDER CONSTRUCTION!!!
+
 const deadOptions = loadXML('src/deadOptions.xml'); // do we load it like that? or do we load them as separate options?
 
 function elt(type,props,...children){let dom=document.createElement(type);if(props)Object.assign(dom,props);for(let child of children){if(typeof child!="string")dom.appendChild(child);else dom.appendChild(document.createTextNode(child));}return(dom);}
@@ -190,65 +192,87 @@ Options.prototype.show = function() {
 	};
 };
 
-// code from https://www.30secondsofcode.org/articles/s/js-data-structures-tree
+/*/ code from https://www.30secondsofcode.org/articles/s/js-data-structures-tree
 
-class Node {
-	constructor(key, value = key, parent = null) {
-		this.key = key;
-		this.value = value;
-		this.parent = parent;
-		this.children = [];
-	}
-	get isLeaf() {
-		return this.children.length === 0;
-	}
-	get hasChildren() {
-		return !this.isLeaf;
-	}
+// class Scene {
+// 	constructor(key, value = key, parent = null) {
+// 		this.key = key;
+// 		this.value = value;
+// 		this.parent = parent;
+// 		this.children = [];
+// 	}
+// 	get isLeaf() {
+// 		return this.children.length === 0;
+// 	}
+// 	get hasChildren() {
+// 		return !this.isLeaf;
+// 	}
+// }
+//
+// class Tree {
+// 	constructor(key, value = key) {
+// 		this.root = new TreeNode(key, value);
+// 	}
+// 	*preOrderTraversal(node = this.root) {
+// 		yield node;
+// 		if (node.children.length) {
+// 			for (let child of node.children) {
+// 				yield* this.preOrderTraversal(child);
+// 			}
+// 		}
+// 	}
+// 	*postOrderTraversal(node = this.root) {
+// 		if (node.children.length) {
+// 			for (let child of node.children) {
+// 				yield* this.postOrderTraversal(child);
+// 			}
+// 		}
+// 		yield node;
+// 	}
+// 	insert(parentNodeKey, key, value = key) {
+// 		for (let node of this.preOrderTraversal()) {
+// 			if (node.key === parentNodeKey) {
+// 				return node.children.push(new TreeNode(key, value, node));
+// 			}
+// 		}
+// 		return false;
+// 	}
+// 	remove(key) {
+// 		for (let node of this.preOrderTraversal()) {
+// 			const filtered = node.children.filter(c => c.key !== key);
+// 			if (filtered.length !== node.children.length) {
+// 				node.children = filtered;
+// 				return true;
+// 			}
+// 		}
+// 		return false;
+// 	}
+// 	find(key) {
+// 		for (let node of this.preOrderTraversal()) {
+// 			if (node.key === key) return node;
+// 		}
+// 		return undefined;
+// 	}
+// }*/
+
+function Scene(id, dom) {
+	this.id = id;
+	this.dom = dom;
+	this.pointing = []; // the scenes its pointing to
+	this.pointed = []; // the scenes that point to this
+	this.recency = 0; // recency number
+	this.setOptions();
 }
 
-class Tree {
-	constructor(key, value = key) {
-		this.root = new TreeNode(key, value);
-	}
-	*preOrderTraversal(node = this.root) {
-		yield node;
-		if (node.children.length) {
-			for (let child of node.children) {
-				yield* this.preOrderTraversal(child);
-			}
-		}
-	}
-	*postOrderTraversal(node = this.root) {
-		if (node.children.length) {
-			for (let child of node.children) {
-				yield* this.postOrderTraversal(child);
-			}
-		}
-		yield node;
-	}
-	insert(parentNodeKey, key, value = key) {
-		for (let node of this.preOrderTraversal()) {
-			if (node.key === parentNodeKey) {
-				return node.children.push(new TreeNode(key, value, node));
-			}
-		}
-		return false;
-	}
-	remove(key) {
-		for (let node of this.preOrderTraversal()) {
-			const filtered = node.children.filter(c => c.key !== key);
-			if (filtered.length !== node.children.length) {
-				node.children = filtered;
-				return true;
-			}
-		}
-		return false;
-	}
-	find(key) {
-		for (let node of this.preOrderTraversal()) {
-			if (node.key === key) return node;
-		}
-		return undefined;
-	}
-}
+Scene.prototype.isDead = function() {
+	return this.pointing.length = 0;
+};
+
+Scene.prototype.setOptions = function() {
+	this.options = [];
+};
+
+Scene.prototype.addPointing = function(add) { // add must be another scene.
+	this.pointing.push(add);
+	add.pointed.push(this); // while this is recorded as pointing to add, add is also recorded as being pointed to by this
+};
