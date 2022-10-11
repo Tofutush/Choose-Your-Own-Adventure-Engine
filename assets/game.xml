@@ -1,85 +1,123 @@
-<outcome type="game">
-	<display>
-		<text>ur parents r away from home! what will u do?</text>
-	</display>
-	<options>
-		<option>
-			<display>
-				<text>invite friends over</text>
-			</display>
-			<outcome type="game">
+<game>
+	<scene id="game">
+		<display>
+			<text>ur parents r away from home! what will u do?</text>
+		</display>
+		<options>
+			<option scene="friends">
 				<display>
-					<text>what kind of friends?</text>
+					<text>invite friends over</text>
 				</display>
-				<options>
-					<option>
-						<display>
-							<text>friends from school</text>
-						</display>
-						<outcome type="dead">
-							<display>
-								<text>you invite friends from school and play.</text>
-							</display>
-						</outcome>
-					</option>
-					<option>
-						<display>
-							<text>friends on the block</text>
-						</display>
-						<outcome type="dead">
-							<display>
-								<text>but then youll have to go outside!</text>
-							</display>
-						</outcome>
-					</option>
-					<option>
-						<display>
-							<text>your bf/gf</text>
-						</display>
-						<outcome type="game">
-							<display>
-								<text>you invite your bf/gf over. what will u do?</text>
-							</display>
-							<options>
-								<option>
-									<display><text>go to bed.</text></display>
-									<outcome type="dead">
-										<display><text>u go 2 bed.</text></display>
-									</outcome>
-								</option>
-								<option>
-									<display><text>bak</text></display>
-									<outcome type="back"/>
-								</option>
-							</options>
-						</outcome>
-					</option>
-				</options>
-			</outcome>
-		</option>
-		<option>
-			<display>
-				<text>go outside and play</text>
-			</display>
-			<outcome type="dead">
-				<display><text>u go outside</text></display>
-			</outcome>
-		</option>
-		<option>
-			<display>
-				<text>stay indoors and play</text>
-			</display>
-			<outcome type="game">
-				<display><text>what will u do</text></display>
-				<options>
-					<option>
-						<display><text>commit arson</text></display>
-						<outcome type="dead">
-							<display><text>u burn urself 2 death</text></display>
-						</outcome>
-					</option>
-				</options>
-			</outcome>
-		</option>
-	</options>
-</outcome>
+			</option>
+			<option scene="outside">
+				<display>
+					<text>go outside and play</text>
+				</display>
+			</option>
+			<option scene="indoors">
+				<display>
+					<text>stay indoors and play</text>
+				</display>
+			</option>
+		</options>
+	</scene>
+	<scene id="friends">
+		<display>
+			<text>what kind of friends?</text>
+		</display>
+		<options>
+			<option scene="school">
+				<display>
+					<text>friends from school</text>
+				</display>
+			</option>
+			<option scene="block">
+				<display>
+					<text>friends on the block</text>
+				</display>
+			</option>
+			<option scene="bfgf">
+				<display>
+					<text>your bf/gf</text>
+				</display>
+			</option>
+		</options>
+	</scene>
+	<scene id="bfgf">
+		<display>
+			<text>you invite your bf/gf over. what will u do?</text>
+		</display>
+		<options>
+			<option scene="bed">
+				<display><text>go to bed.</text></display>
+			</option>
+			<option scene="friends">
+				<display><text>bak</text></display>
+			</option>
+		</options>
+	</scene>
+	<scene id="bed">
+		<display><text>u go 2 bed.</text></display>
+		<options>
+			<option scene="bfgf">
+				<display>back</display>
+			</option>
+			<option scene="game">
+				<display>start over</display>
+			</option>
+		</options>
+	</scene>
+	<scene id="school">
+		<display>
+			<text>you invite friends from school and play.</text>
+		</display>
+		<options>
+			<option scene="friends">
+				<display>back</display>
+			</option>
+			<option scene="game">
+				<display>start over</display>
+			</option>
+		</options>
+	</scene>
+	<scene id="block">
+		<display>
+			<text>but then youll have to go outside!</text>
+		</display>
+		<options>
+			<option scene="friends">
+				<display>back</display>
+			</option>
+			<option scene="game">
+				<display>start over</display>
+			</option>
+		</options>
+	</scene>
+	<scene id="outside">
+		<display><text>u go outside</text></display>
+		<options>
+			<option scene="game">
+				<display>back</display>
+			</option>
+			<option scene="game">
+				<display>start over</display>
+			</option>
+		</options>
+	</scene>
+	<scene id="indoors">
+		<display><text>what will u do</text></display>
+		<options>
+			<option scene="fire">
+				<display><text>commit arson</text></display>
+			</option>
+		</options>
+	</scene>
+	<scene id="fire">
+		<display><text>u burn urself 2 death</text></display>
+		<options>
+			<option scene="indoors">
+				<display>back</display>
+			</option>
+		</options>
+	</scene>
+</game>

@@ -1,15 +1,18 @@
 var fstGame = {}, // the first game, used in the "start over" option
 	nowGame = {}, // the game were playing right now (do we even need this?)
 	preGame = {}; // the previous game, used in the "back" option
-var page = { // stuff on document,body
+var gameGraph;
+var page = { // stuff on document.body
 	display: document.getElementById('display'),
 	options: document.getElementById('options')
 };
-const deadOptions = loadXML('src/deadOptions.xml'); // do we load it like that? or do we load them as separate options?
+var globalRecency = 0; // recency (is this even a word?) is how you count what scene has been last reached. the larger the number, the more recent. STILL UNDER CONSTRUCTION!!!
+
+// const deadOptions = loadXML('src/deadOptions.xml'); // do we load it like that? or do we load them as separate options?
 
 function elt(type,props,...children){let dom=document.createElement(type);if(props)Object.assign(dom,props);for(let child of children){if(typeof child!="string")dom.appendChild(child);else dom.appendChild(document.createTextNode(child));}return(dom);}
 
-function loadXML(url, type) {
+function loadXML(url) {
 	let r = new XMLHttpRequest();
 	let p = new DOMParser();
 	r.open('GET', url, false);
@@ -47,13 +50,12 @@ function loadXML(url, type) {
 // }
 */
 
-function initGame(game) { // do we need a one-line function like this?
-	fstGame.play();
+function initGame() {
 }
 
 //Outcome
 
-function Outcome(dom, parent) {
+/*function Outcome(dom, parent) {
 	this.dom = dom;
 	this.parent = parent; // parent can be the preceding game
 	this.type = dom.getAttribute('type');
@@ -101,57 +103,57 @@ Outcome.prototype.play = function() {
 	//console.log(this.parent);
 	this.display.show();
 	this.options.show();
-};
+};*/
 
 //Display
 
-function Display(dom, parent) {
+function Display(dom, where) {
 	this.dom = dom;
-	this.parent = parent; // parent is the element the display will be displayed on
+	this.where = where; // parent is the element the display will be displayed on
 	this.init();
 }
 
-Display.prototype.parseImg = function(img) { // do we even need these two one-line functions
-	return elt('img', {src: 'assets/'+img.firstChild.nodeValue});
-};
-
-Display.prototype.parseText = function(txt) {
-	return elt('p', {className: 'text'}, txt.firstChild.nodeValue);
-};
 Display.prototype.init = function() {
 	this.elts = [];
 	let children = this.dom.children;
-	for(z = 0; z < children.length; z++){
-		switch(children[z].tagName) {
-			case 'img':
-				this.elts.push(this.parseImg(children[z]));
-				break;
-			case 'text':
-				this.elts.push(this.parseText(children[z]));
-				break;
-			default:
-				console.log(children[z+1].innerText);
-				throw new Error(`unidentified display tag ${children[z].tagName}`);
+	if(children.length)
+		for(let z = 0; z < children.length; z++){
+			switch(children[z].tagName) {
+				case 'img':
+					this.elts.push(elt('img', {src: 'assets/'+children[z].firstChild.nodeValue}));
+					break;
+				case 'text':
+					this.elts.push(elt('p', {className: 'text'}, children[z].firstChild.nodeValue));
+					break;
+				default:
+					console.log(children[z+1].innerText);
+					throw new Error(`unidentified display tag ${children[z].tagName}`);
+			}
 		}
-	}
+	else this.elts.push(elt('p', {className: 'text'}, this.dom.firstChild.nodeValue));
 };
 
 Display.prototype.show = function() {
-	this.parent.innerHTML = '';
-	for(z = 0; z < this.elts.length; z++) {
-		this.parent.appendChild(this.elts[z]);
+	this.where.innerHTML = '';
+	for(let z = 0; z < this.elts.length; z++) {
+		this.where.appendChild(this.elts[z]);
 	};
 };
 
 //Option
 
-function Option(dom, parent) {
+function Option(dom, scene, id) {
 	this.dom = dom;
-	this.parent = parent; // parent is the Options object
-	this.init();
+	this.scene = scene;
+	this.id = `${this.scene.id}-${id}`;
+	this.button = elt('button', {id: this.id});
+	this.display = new Display(this.dom.children[0], this.button);
+	this.button.addEventListener('click', () => {
+		this.outcome.play();
+	})
 }
 
-Option.prototype.init = function() {
+/*Option.prototype.init = function() {
 	this.button = elt('button');
 	this.display = new Display(this.dom.children[0], this.button);
 	this.display.show();
@@ -160,10 +162,10 @@ Option.prototype.init = function() {
 	this.button.addEventListener('click', () => {
 		this.outcome.play();
 	});
-};
+};*/
 
 //Options
-
+/*
 function Options(dom, parent) {
 	this.dom = dom || deadOptions;
 	this.parent = parent; // parent is the Outcome object
@@ -188,68 +190,152 @@ Options.prototype.show = function() {
 	for(z = 0; z < this.elts.length; z++) {
 		page.options.appendChild(this.elts[z].button);
 	};
+};*/
+
+/*/ code from https://www.30secondsofcode.org/articles/s/js-data-structures-tree
+
+/* class Scene {
+// 	constructor(key, value = key, parent = null) {
+// 		this.key = key;
+// 		this.value = value;
+// 		this.parent = parent;
+// 		this.children = [];
+// 	}
+// 	get isLeaf() {
+// 		return this.children.length === 0;
+// 	}
+// 	get hasChildren() {
+// 		return !this.isLeaf;
+// 	}
+// }
+//
+// class Tree {
+// 	constructor(key, value = key) {
+// 		this.root = new TreeNode(key, value);
+// 	}
+// 	*preOrderTraversal(node = this.root) {
+// 		yield node;
+// 		if (node.children.length) {
+// 			for (let child of node.children) {
+// 				yield* this.preOrderTraversal(child);
+// 			}
+// 		}
+// 	}
+// 	*postOrderTraversal(node = this.root) {
+// 		if (node.children.length) {
+// 			for (let child of node.children) {
+// 				yield* this.postOrderTraversal(child);
+// 			}
+// 		}
+// 		yield node;
+// 	}
+// 	insert(parentNodeKey, key, value = key) {
+// 		for (let node of this.preOrderTraversal()) {
+// 			if (node.key === parentNodeKey) {
+// 				return node.children.push(new TreeNode(key, value, node));
+// 			}
+// 		}
+// 		return false;
+// 	}
+// 	remove(key) {
+// 		for (let node of this.preOrderTraversal()) {
+// 			const filtered = node.children.filter(c => c.key !== key);
+// 			if (filtered.length !== node.children.length) {
+// 				node.children = filtered;
+// 				return true;
+// 			}
+// 		}
+// 		return false;
+// 	}
+// 	find(key) {
+// 		for (let node of this.preOrderTraversal()) {
+// 			if (node.key === key) return node;
+// 		}
+// 		return undefined;
+// 	}
+// }*/
+
+// Game: do we even need a class for this theres only gonna be one game oh wait maybe were gonna need a series of games haha more things for me to do great.
+// NO WE WILL NOT HAVE A SERIES OF GAMES IF YOU REALLY WANT THAT EITHER MAKE THEM ONE GAME OR DISTRIBUTE THEM AS SEPARATE STUFF NO NO NO
+
+function Game(dom) {
+	this.dom = dom;
+	this.addScenes();
+}
+
+Game.prototype.initialize = function() {
+	for(let z = 0; z < this.scenes.length; z++) {
+		let ops = this.scenes[z].options;
+		for(let x = 0; x < ops.length; x++) {
+			ops[x].outcome = this.find(ops[x].dom.getAttribute('scene'));
+			// ops[x].button.addEventListener('click', () => {
+			// 	ops[x].outcome.play();
+			// });
+		};
+		this.scenes[z].addPointing();
+	};
+}
+
+Game.prototype.addScenes = function() {
+	this.scenes = [];
+	let ch = this.dom.children;
+	for(let z = 0; z < ch.length; z++) {
+		this.scenes.push(new Scene(ch[z], ch[z].getAttribute('id')));
+	};
 };
 
-// code from https://www.30secondsofcode.org/articles/s/js-data-structures-tree
+Game.prototype.find = function(id) {
+	for(let z = 0; z < this.scenes.length; z++) {
+		if(this.scenes[z].id == id) return this.scenes[z];
+	};
+	throw new Error('scene of id', id, 'not found');
+};
 
-class TreeNode {
-	constructor(key, value = key, parent = null) {
-		this.key = key;
-		this.value = value;
-		this.parent = parent;
-		this.children = [];
-	}
-	get isLeaf() {
-		return this.children.length === 0;
-	}
-	get hasChildren() {
-		return !this.isLeaf;
-	}
+// Scene: its what u see on the screen
+
+function Scene(dom, id) {
+	this.dom = dom;
+	this.id = id;
+	this.pointing = []; // the scenes its pointing to
+	this.pointed = []; // the scenes that point to this
+	this.recency = 0;
+	this.display = new Display(this.dom.children[0], page.display);
+	this.addOptions();
+	//this.addPointing();
 }
 
-class Tree {
-	constructor(key, value = key) {
-		this.root = new TreeNode(key, value);
-	}
-	*preOrderTraversal(node = this.root) {
-		yield node;
-		if (node.children.length) {
-			for (let child of node.children) {
-				yield* this.preOrderTraversal(child);
-			}
-		}
-	}
-	*postOrderTraversal(node = this.root) {
-		if (node.children.length) {
-			for (let child of node.children) {
-				yield* this.postOrderTraversal(child);
-			}
-		}
-		yield node;
-	}
-	insert(parentNodeKey, key, value = key) {
-		for (let node of this.preOrderTraversal()) {
-			if (node.key === parentNodeKey) {
-				node.children.push(new TreeNode(key, value, node));
-				return true;
-			}
-		}
-		return false;
-	}
-	remove(key) {
-		for (let node of this.preOrderTraversal()) {
-			const filtered = node.children.filter(c => c.key !== key);
-			if (filtered.length !== node.children.length) {
-				node.children = filtered;
-				return true;
-			}
-		}
-		return false;
-	}
-	find(key) {
-		for (let node of this.preOrderTraversal()) {
-			if (node.key === key) return node;
-		}
-		return undefined;
-	}
-}
+Scene.prototype.isDead = function() {
+	return this.pointing.length = 0;
+};
+
+Scene.prototype.addOptions = function() {
+	this.options = [];
+	let ch = this.dom.children[1].children;
+	for(let z = 0; z < ch.length; z++) {
+		this.options.push(new Option(ch[z], this, z.toString()));
+	};
+};
+
+Scene.prototype.addPointing = function() { // add must be another scene.
+	for(let z = 0; z < this.options.length; z++) {
+		this.pointing.push(this.options[z].outcome);
+		this.options[z].outcome.pointed.push(this); // while this is recorded as pointing to that, that is also recorded as being pointed to by this
+	};
+};
+
+Scene.prototype.showOptions = function() {
+	page.options.innerHTML = '';
+	for(let z = 0; z < this.options.length; z++) {
+		this.options[z].display.show();
+		page.options.appendChild(this.options[z].button);
+	};
+};
+
+Scene.prototype.play = function() {
+	this.display.show();
+	this.showOptions();
+};
+
+gameGraph = new Game(loadXML('assets/game.xml'));
+gameGraph.initialize();
+gameGraph.find('game').play();
