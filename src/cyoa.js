@@ -268,6 +268,9 @@ Game.prototype.initialize = function() {
 		let ops = this.scenes[z].options;
 		for(let x = 0; x < ops.length; x++) {
 			ops[x].outcome = this.find(ops[x].dom.getAttribute('scene'));
+			// ops[x].button.addEventListener('click', () => {
+			// 	ops[x].outcome.play();
+			// });
 		};
 		this.scenes[z].addPointing();
 	};
@@ -277,7 +280,6 @@ Game.prototype.addScenes = function() {
 	this.scenes = [];
 	let ch = this.dom.children;
 	for(let z = 0; z < ch.length; z++) {
-		console.log(ch[z].getAttribute('id'));
 		this.scenes.push(new Scene(ch[z], ch[z].getAttribute('id')));
 	};
 };
@@ -321,10 +323,19 @@ Scene.prototype.addPointing = function() { // add must be another scene.
 	};
 };
 
-Scene.prototype.play = function() {
+Scene.prototype.showOptions = function() {
+	page.options.innerHTML = '';
+	for(let z = 0; z < this.options.length; z++) {
+		this.options[z].display.show();
+		page.options.appendChild(this.options[z].button);
+	};
+};
 
+Scene.prototype.play = function() {
+	this.display.show();
+	this.showOptions();
 };
 
 gameGraph = new Game(loadXML('assets/game.xml'));
 gameGraph.initialize();
-console.log(gameGraph.find('game'));
+gameGraph.find('game').play();
