@@ -62,9 +62,6 @@
 			<option scene="bfgf">
 				<display>back</display>
 			</option>
-			<option scene="game">
-				<display>start over</display>
-			</option>
 		</options>
 	</scene>
 	<scene id="school">
@@ -74,9 +71,6 @@
 		<options>
 			<option scene="friends">
 				<display>back</display>
-			</option>
-			<option scene="game">
-				<display>start over</display>
 			</option>
 		</options>
 	</scene>
@@ -88,9 +82,6 @@
 			<option scene="friends">
 				<display>back</display>
 			</option>
-			<option scene="game">
-				<display>start over</display>
-			</option>
 		</options>
 	</scene>
 	<scene id="outside">
@@ -98,9 +89,6 @@
 		<options>
 			<option scene="game">
 				<display>back</display>
-			</option>
-			<option scene="game">
-				<display>start over</display>
 			</option>
 		</options>
 	</scene>
