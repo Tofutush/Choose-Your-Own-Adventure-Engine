@@ -2,11 +2,15 @@
 	<scene id="game">
 		<display>
 			<text>ur parents r away from home! what will u do?</text>
+			<img style="width: 100px;">1.png</img>
+			<text>another line</text>
+			<img>2.png</img>
 		</display>
 		<options>
 			<option scene="friends">
 				<display>
 					<text>invite friends over</text>
+					<img>2.png</img>
 				</display>
 			</option>
 			<option scene="outside">

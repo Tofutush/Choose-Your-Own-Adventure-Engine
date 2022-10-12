@@ -1,0 +1,39 @@
+meant to be embedded
+
+body {
+	margin: 0;
+	padding: 0;
+}
+
+.display-text {
+	font-size: 1.5em;
+	margin: 1em;
+	text-align: center;
+}
+
+.display-img {
+	margin: 1em auto;
+	user-select: none;
+	width: fit-content;
+}
+
+.choice-button {
+	background-color: #fff;
+	border: 5px solid #000;
+	box-shadow: 0 0 0 #aaa;
+	display: block;
+	margin: 1em auto;
+	transition: 150ms box-shadow;
+}
+
+.choice-button:hover {
+	box-shadow: 0 0 10px #aaa;
+}
+
+.choice-button:active {
+	background-color: #ccc;
+}
+
+#display {
+	align-content: center;
+}

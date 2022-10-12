@@ -35,7 +35,7 @@ Display.prototype.init = function() {
 		for(let z = 0; z < children.length; z++){
 			switch(children[z].tagName) {
 				case 'img':
-					this.elts.push(elt('img', {className: 'display-img', src: 'assets/'+children[z].firstChild.nodeValue, id: `${this.id}-${z}`}));
+					this.elts.push(elt('div', {className: 'display-img'}, elt('img', {src: 'assets/'+children[z].firstChild.nodeValue, id: `${this.id}-${z}`, style: children[z].getAttribute('style')})));
 					break;
 				case 'text':
 					this.elts.push(elt('p', {className: 'display-text', id: `${this.id}-${z}`}, children[z].firstChild.nodeValue));
