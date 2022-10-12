@@ -1,6 +1,7 @@
 # next:
 - start over on every page (done)
-- ui
+- ui (done)
+- type support (like in fail)
 - save & load
 - user guide
 - map feature!

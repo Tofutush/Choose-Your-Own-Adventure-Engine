@@ -1,67 +1,70 @@
 <game>
+	<tem name="fail" style="color: #f00; font-size: 2.5em;">
+		FAIL
+	</tem>
 	<scene id="game">
 		<display>
-			<text>ur parents r away from home! what will u do?</text>
+			<txt>ur parents r away from home! what will u do?</txt>
 			<img style="width: 100px;">1.png</img>
-			<text>another line</text>
+			<txt>another line</txt>
 			<img>2.png</img>
 		</display>
 		<options>
 			<option scene="friends">
 				<display>
-					<text>invite friends over</text>
+					<txt>invite friends over</txt>
 					<img>2.png</img>
 				</display>
 			</option>
 			<option scene="outside">
 				<display>
-					<text>go outside and play</text>
+					<txt>go outside and play</txt>
 				</display>
 			</option>
 			<option scene="indoors">
 				<display>
-					<text>stay indoors and play</text>
+					<txt>stay indoors and play</txt>
 				</display>
 			</option>
 		</options>
 	</scene>
 	<scene id="friends">
 		<display>
-			<text>what kind of friends?</text>
+			<txt>what kind of friends?</txt>
 		</display>
 		<options>
 			<option scene="school">
 				<display>
-					<text>friends from school</text>
+					<txt>friends from school</txt>
 				</display>
 			</option>
 			<option scene="block">
 				<display>
-					<text>friends on the block</text>
+					<txt>friends on the block</txt>
 				</display>
 			</option>
 			<option scene="bfgf">
 				<display>
-					<text>your bf/gf</text>
+					<txt>your bf/gf</txt>
 				</display>
 			</option>
 		</options>
 	</scene>
 	<scene id="bfgf">
 		<display>
-			<text>you invite your bf/gf over. what will u do?</text>
+			<txt>you invite your bf/gf over. what will u do?</txt>
 		</display>
 		<options>
 			<option scene="bed">
-				<display><text>go to bed.</text></display>
+				<display><txt>go to bed.</txt></display>
 			</option>
 			<option scene="friends">
-				<display><text>bak</text></display>
+				<display><txt>bak</txt></display>
 			</option>
 		</options>
 	</scene>
 	<scene id="bed">
-		<display><text>u go 2 bed.</text></display>
+		<display><txt>u go 2 bed.</txt></display>
 		<options>
 			<option scene="bfgf">
 				<display>back</display>
@@ -70,7 +73,7 @@
 	</scene>
 	<scene id="school">
 		<display>
-			<text>you invite friends from school and play.</text>
+			<txt>you invite friends from school and play.</txt>
 		</display>
 		<options>
 			<option scene="friends">
@@ -80,7 +83,8 @@
 	</scene>
 	<scene id="block">
 		<display>
-			<text>but then youll have to go outside!</text>
+			<txt tem="fail"/>
+			<txt tem="fail">u cant go outside</txt>
 		</display>
 		<options>
 			<option scene="friends">
@@ -89,7 +93,7 @@
 		</options>
 	</scene>
 	<scene id="outside">
-		<display><text>u go outside</text></display>
+		<display><txt>u go outside</txt></display>
 		<options>
 			<option scene="game">
 				<display>back</display>
@@ -97,15 +101,15 @@
 		</options>
 	</scene>
 	<scene id="indoors">
-		<display><text>what will u do</text></display>
+		<display><txt>what will u do</txt></display>
 		<options>
 			<option scene="fire">
-				<display><text>commit arson</text></display>
+				<display><txt>commit arson</txt></display>
 			</option>
 		</options>
 	</scene>
 	<scene id="fire">
-		<display><text>u burn urself 2 death</text></display>
+		<display><txt>u burn urself 2 death</txt></display>
 		<options>
 			<option scene="indoors">
 				<display>back</display>

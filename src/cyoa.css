@@ -5,7 +5,7 @@ body {
 	padding: 0;
 }
 
-.display-text {
+.display-txt {
 	font-size: 1.5em;
 	margin: 1em;
 	text-align: center;
@@ -24,6 +24,7 @@ body {
 	display: block;
 	margin: 1em auto;
 	transition: 150ms box-shadow;
+	user-select: none;
 }
 
 .choice-button:hover {

@@ -4,6 +4,7 @@ var page = { // stuff on document.body
 	display: document.getElementById('display'),
 	options: document.getElementById('options')
 };
+var tems = {}; // templates
 var globalRecency = 0; // recency (is this even a word?) is how you count what scene has been last reached. the larger the number, the more recent. STILL UNDER CONSTRUCTION!!!
 //what r we gonna do w/ this recency?
 
@@ -23,29 +24,60 @@ function loadXML(url) {
 
 function Display(dom, where, id) {
 	this.dom = dom;
-	this.where = where; // "where" is the element the Display will be displayed on
+	this.where = where; // "where" is where the Display will be displayed on
 	this.id = id;
+	this.style = this.dom.getAttribute('style');
 	this.init();
 }
 
 Display.prototype.init = function() {
 	this.elts = [];
-	let children = this.dom.children;
-	if(children.length)
-		for(let z = 0; z < children.length; z++){
-			switch(children[z].tagName) {
+	let ch = this.dom.children;
+	if(ch.length)
+		for(let z = 0; z < ch.length; z++) {
+			let eltId = `${this.id}-d-${z}`;
+			let tem = tems[ch[z].getAttribute('tem')];
+			let style = tem ? tem.getAttribute('style') : ch[z].getAttribute('style');
+			let value = tem ? tem.firstChild.nodeValue : ch[z].firstChild.nodeValue;
+			style = ch[z].getAttribute('style') || style;
+			value = ch[z].firstChild ? ch[z].firstChild.nodeValue : value;
+
+			// if(tem) {
+			// 	style = ch[z].getAttribute('style') || tem.getAttribute('style');
+			// 	value = ch[z].firstChild.nodeValue || tem.firstChild.nodeValue;
+			// } else {
+			// 	style = ch[z].getAttribute('style');
+			// 	value = ch[z].firstChild.nodeValue;
+			// }
+			switch(ch[z].tagName) {
 				case 'img':
-					this.elts.push(elt('div', {className: 'display-img'}, elt('img', {src: 'assets/'+children[z].firstChild.nodeValue, id: `${this.id}-${z}`, style: children[z].getAttribute('style')})));
+					this.elts.push(elt('div', {className: 'display-img'}, elt('img', {src: `assets/${value}`, id: eltId, style: style})));
 					break;
-				case 'text':
-					this.elts.push(elt('p', {className: 'display-text', id: `${this.id}-${z}`}, children[z].firstChild.nodeValue));
+				case 'txt':
+					this.elts.push(elt('p', {className: 'display-txt', id: eltId, style: style}, value));
 					break;
 				default:
-					console.log(children[z+1].innerText);
-					throw new Error(`unidentified display tag ${children[z].tagName}`);
+					console.log(ch[z+1].innerText);
+					throw new Error(`unidentified display tag ${ch[z].tagName}`);
 			}
+			// eltId = `${this.id}-d-${z}`;
+			// style = ch[z].getAttribute('style');
+			// value = ch[z].firstChild.nodeValue;
+			// switch(ch[z].tagName) {
+			// 	case 'img':
+			// 		this.elts.push(elt('div', {className: 'display-img'}, elt('img', {src: `assets/${value}`, id: eltId, style: style})));
+			// 		break;
+			// 	case 'text':
+			// 		this.elts.push(elt('p', {className: 'display-text', id: eltId, style: style}, value));
+			// 		break;
+			// 	default:
+			// 		console.log(ch[z+1].innerText);
+			// 		throw new Error(`unidentified display tag ${children[z].tagName}`);
+			// }
 		}
-	else this.elts.push(elt('p', {className: 'display-text', id: `${this.id}-0`}, this.dom.firstChild.nodeValue));
+	else {
+		this.elts.push(elt('p', {className: 'display-txt', id: `${this.id}-d-0`, style: this.dom.getAttribute('style')}, this.dom.firstChild.nodeValue));
+	}
 };
 
 Display.prototype.show = function() {
@@ -60,7 +92,7 @@ Display.prototype.show = function() {
 function Option(dom, scene, id) {
 	this.dom = dom;
 	this.scene = scene;
-	this.id = `${this.scene.id}-${id}`;
+	this.id = `${this.scene.id}-o-${id}`;
 	this.button = elt('button', {className: 'choice-button', id: this.id});
 	this.display = new Display(this.dom.children[0], this.button, `${this.id}-display`);
 	this.display.show();
@@ -68,10 +100,6 @@ function Option(dom, scene, id) {
 		this.outcome.play();
 	});
 }
-
-Option.prototype.click = function() {
-	this.outcome.play();
-};
 
 // Game. a class with only one instance. do we keep it?
 
@@ -94,7 +122,8 @@ Game.prototype.addScenes = function() {
 	this.scenes = [];
 	let ch = this.dom.children;
 	for(let z = 0; z < ch.length; z++) {
-		this.scenes.push(new Scene(ch[z], ch[z].getAttribute('id')));
+		if(ch[z].tagName == "scene") this.scenes.push(new Scene(ch[z], ch[z].getAttribute('id')));
+		else tems[ch[z].getAttribute('name')] = ch[z];
 	};
 };
 
