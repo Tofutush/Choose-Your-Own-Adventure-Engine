@@ -2,9 +2,10 @@
 	<tem name="fail" style="color: #f00; font-size: 2.5em;">
 		FAIL
 	</tem>
+	<tem name="blue" style="color: #00f"></tem>
 	<scene id="game">
 		<display>
-			<txt>ur parents r away from home! what will u do?</txt>
+			<txt tem="blue" style="color: #0f0">ur parents r away from home! what will u do?</txt>
 			<img style="width: 100px;">1.png</img>
 			<txt>another line</txt>
 			<img>2.png</img>

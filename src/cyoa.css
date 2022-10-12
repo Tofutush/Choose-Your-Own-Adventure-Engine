@@ -29,6 +29,7 @@ body {
 
 .choice-button:hover {
 	box-shadow: 0 0 10px #aaa;
+	cursor: pointer;
 }
 
 .choice-button:active {

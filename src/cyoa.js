@@ -37,18 +37,8 @@ Display.prototype.init = function() {
 		for(let z = 0; z < ch.length; z++) {
 			let eltId = `${this.id}-d-${z}`;
 			let tem = tems[ch[z].getAttribute('tem')];
-			let style = tem ? tem.getAttribute('style') : ch[z].getAttribute('style');
-			let value = tem ? tem.firstChild.nodeValue : ch[z].firstChild.nodeValue;
-			style = ch[z].getAttribute('style') || style;
-			value = ch[z].firstChild ? ch[z].firstChild.nodeValue : value;
-
-			// if(tem) {
-			// 	style = ch[z].getAttribute('style') || tem.getAttribute('style');
-			// 	value = ch[z].firstChild.nodeValue || tem.firstChild.nodeValue;
-			// } else {
-			// 	style = ch[z].getAttribute('style');
-			// 	value = ch[z].firstChild.nodeValue;
-			// }
+			let style = ch[z].getAttribute('style') ? ch[z].getAttribute('style') : (tem ? tem.getAttribute('style') : '');
+			let value = ch[z].firstChild ? ch[z].firstChild.nodeValue : tem.firstChild.nodeValue;
 			switch(ch[z].tagName) {
 				case 'img':
 					this.elts.push(elt('div', {className: 'display-img'}, elt('img', {src: `assets/${value}`, id: eltId, style: style})));
