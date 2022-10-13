@@ -1,4 +1,4 @@
-var nowGame;
+var nowGame, savedGame;
 var gameGraph;
 var page = { // stuff on document.body
 	display: document.getElementById('display'),
@@ -8,8 +8,6 @@ var tems = {}; // templates
 var globalRecency = 0; // recency (is this even a word?) is how you count what scene has been last reached. the larger the number, the more recent. STILL UNDER CONSTRUCTION!!!
 //what r we gonna do w/ this recency?
 
-const startOver = loadXML('src/startOver.xml');
-
 function elt(type,props,...children){let dom=document.createElement(type);if(props)Object.assign(dom,props);for(let child of children){if(typeof child!="string")dom.appendChild(child);else dom.appendChild(document.createTextNode(child));}return(dom);}
 
 function loadXML(url) {
@@ -18,6 +16,14 @@ function loadXML(url) {
 	r.open('GET', url, false);
 	r.send(null);
 	return p.parseFromString(r.responseText, 'text/xml').children[0];
+}
+
+function save() {
+	savedGame = nowGame.id;
+}
+
+function load() {
+	gameGraph.find(savedGame).play();
 }
 
 //Display: the actual thing you see on the screen
@@ -83,7 +89,7 @@ function Option(dom, scene, id) {
 	this.dom = dom;
 	this.scene = scene;
 	this.id = `${this.scene.id}-o-${id}`;
-	this.button = elt('button', {className: 'choice-button', id: this.id});
+	this.button = elt('button', {className: 'option-button', id: this.id});
 	this.display = new Display(this.dom.children[0], this.button, `${this.id}-display`);
 	this.display.show();
 	this.button.addEventListener('click', () => {
@@ -146,7 +152,6 @@ Scene.prototype.addOptions = function() {
 	for(let z = 0; z < ch.length; z++) {
 		this.options.push(new Option(ch[z], this, z.toString()));
 	};
-	if(this.id !="game") this.options.push(new Option(startOver, this, ch.length));
 };
 
 Scene.prototype.addPointing = function() {

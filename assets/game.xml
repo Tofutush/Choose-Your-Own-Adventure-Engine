@@ -64,7 +64,7 @@
 			</option>
 		</options>
 	</scene>
-	<scene id="bed">
+	<scene id="bed" type="end">
 		<display><txt>u go 2 bed.</txt></display>
 		<options>
 			<option scene="bfgf">
@@ -72,7 +72,7 @@
 			</option>
 		</options>
 	</scene>
-	<scene id="school">
+	<scene id="school" type="end">
 		<display>
 			<txt>you invite friends from school and play.</txt>
 		</display>
@@ -82,7 +82,7 @@
 			</option>
 		</options>
 	</scene>
-	<scene id="block">
+	<scene id="block" type="end">
 		<display>
 			<txt tem="fail"/>
 			<txt tem="fail">u cant go outside</txt>
@@ -93,7 +93,7 @@
 			</option>
 		</options>
 	</scene>
-	<scene id="outside">
+	<scene id="outside" type="end">
 		<display><txt>u go outside</txt></display>
 		<options>
 			<option scene="game">
@@ -107,9 +107,12 @@
 			<option scene="fire">
 				<display><txt>commit arson</txt></display>
 			</option>
+			<option scene="outside">
+				<display>go outside instead</display>
+			</option>
 		</options>
 	</scene>
-	<scene id="fire">
+	<scene id="fire" type="end">
 		<display><txt>u burn urself 2 death</txt></display>
 		<options>
 			<option scene="indoors">

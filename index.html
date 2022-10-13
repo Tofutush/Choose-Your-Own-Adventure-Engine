@@ -7,6 +7,13 @@
 <body>
 	<div id="display"></div>
 	<div id="options"></div>
+	<div id="bar">
+		<button id="start-over" class="bar-button" onclick="gameGraph.find('game').play();">Start Over</button>
+		<button id="save" class="bar-button" onclick="save()">Save place</button>
+		<button id="load" class="bar-button" onclick="load()">Load place</button>
+	</div>
+	<div id="map">
+	</div>
 	<script type="text/javascript" src="src/cyoa.js"></script>
 </body>
 </html>

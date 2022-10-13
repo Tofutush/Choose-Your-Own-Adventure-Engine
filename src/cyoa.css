@@ -17,7 +17,7 @@ body {
 	width: fit-content;
 }
 
-.choice-button {
+.option-button {
 	background-color: #fff;
 	border: 5px solid #000;
 	box-shadow: 0 0 0 #aaa;
@@ -27,15 +27,36 @@ body {
 	user-select: none;
 }
 
-.choice-button:hover {
+.option-button:hover {
 	box-shadow: 0 0 10px #aaa;
 	cursor: pointer;
 }
 
-.choice-button:active {
+.option-button:active {
+	background-color: #ccc;
+}
+
+.bar-button {
+	background-color: #fff;
+	border: 3px solid #000;
+	box-shadow: 0 0 0 #aaa;
+	transition: 100ms box-shadow;
+	user-select: none;
+}
+
+.bar-button:hover {
+	box-shadow: 0 0 5px #aaa;
+	cursor: pointer;
+}
+
+.bar-button:active {
 	background-color: #ccc;
 }
 
 #display {
 	align-content: center;
+}
+
+#map {
+	display: flex;
 }
