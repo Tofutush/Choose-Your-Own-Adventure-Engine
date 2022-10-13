@@ -1,5 +1,6 @@
 var nowGame, savedGame;
-var gameGraph;
+var gameGraph, bigGame;
+var gameMap = {};
 var page = { // stuff on document.body
 	display: document.getElementById('display'),
 	options: document.getElementById('options')
@@ -56,20 +57,6 @@ Display.prototype.init = function() {
 					console.log(ch[z+1].innerText);
 					throw new Error(`unidentified display tag ${ch[z].tagName}`);
 			}
-			// eltId = `${this.id}-d-${z}`;
-			// style = ch[z].getAttribute('style');
-			// value = ch[z].firstChild.nodeValue;
-			// switch(ch[z].tagName) {
-			// 	case 'img':
-			// 		this.elts.push(elt('div', {className: 'display-img'}, elt('img', {src: `assets/${value}`, id: eltId, style: style})));
-			// 		break;
-			// 	case 'text':
-			// 		this.elts.push(elt('p', {className: 'display-text', id: eltId, style: style}, value));
-			// 		break;
-			// 	default:
-			// 		console.log(ch[z+1].innerText);
-			// 		throw new Error(`unidentified display tag ${children[z].tagName}`);
-			// }
 		}
 	else {
 		this.elts.push(elt('p', {className: 'display-txt', id: `${this.id}-d-0`, style: this.dom.getAttribute('style')}, this.dom.firstChild.nodeValue));
@@ -112,6 +99,7 @@ Game.prototype.initialize = function() {
 		};
 		this.scenes[z].addPointing();
 	};
+	bigGame = this.find('game');
 };
 
 Game.prototype.addScenes = function() {
@@ -137,7 +125,8 @@ function Scene(dom, id) {
 	this.id = id;
 	this.pointing = []; // the scenes its pointing to
 	this.pointed = []; // the scenes that point to this
-	this.recency = 0;
+	this.recency = 0; // what r we gonna do w/ this
+	this.type = this.dom.getAttribute('type'); // end or undefined
 	this.display = new Display(this.dom.children[0], page.display, this.id);
 	this.addOptions();
 }
@@ -170,10 +159,23 @@ Scene.prototype.showOptions = function() {
 
 Scene.prototype.play = function() {
 	nowGame = this;
+	this.recency++;
 	this.display.show();
 	this.showOptions();
 };
 
 gameGraph = new Game(loadXML('assets/game.xml'));
 gameGraph.initialize();
-gameGraph.find('game').play();
+bigGame.play();
+
+// needs thinking!
+function createMapRecursion(scene, obj, level) {
+	// obj[scene.id] = {};
+	// for(let z = 0; z < scene.options.length; z++) {
+	// 	if(scene.options[z].outcome.type == 'end') {
+	// 		obj[scene.id][scene.options[z].outcome.id] = 'end';
+	// 	} else {
+	// 		createMapRecursion(scene.options[z].outcome, obj[scene.id]);
+	// 	};
+	// };
+}

@@ -1,0 +1,16 @@
+{
+	'game': {
+		'friends': {
+			'school' : 'end',
+			'block': 'end',
+			'bfgf': {
+				'bed': 'end'
+			}
+		},
+		'outside': 'end',
+		'indoors': {
+			'fire': 'end',
+			'outside': 'end',
+		}
+	}
+}
