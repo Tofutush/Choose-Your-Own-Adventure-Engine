@@ -8,6 +8,7 @@ var page = { // stuff on document.body
 var tems = {}; // templates
 var globalRecency = 0; // recency (is this even a word?) is how you count what scene has been last reached. the larger the number, the more recent. STILL UNDER CONSTRUCTION!!!
 //what r we gonna do w/ this recency?
+var assetPath = '';
 
 function elt(type,props,...children){let dom=document.createElement(type);if(props)Object.assign(dom,props);for(let child of children){if(typeof child!="string")dom.appendChild(child);else dom.appendChild(document.createTextNode(child));}return(dom);}
 
@@ -48,7 +49,7 @@ Display.prototype.init = function() {
 			let value = ch[z].firstChild ? ch[z].firstChild.nodeValue : tem.firstChild.nodeValue;
 			switch(ch[z].tagName) {
 				case 'img':
-					this.elts.push(elt('div', {className: 'display-img'}, elt('img', {src: `assets/${value}`, id: eltId, style: style})));
+					this.elts.push(elt('div', {className: 'display-img'}, elt('img', {src: `${assetPath}/${value}`, id: eltId, style: style})));
 					break;
 				case 'txt':
 					this.elts.push(elt('p', {className: 'display-txt', id: eltId, style: style}, value));
@@ -107,7 +108,8 @@ Game.prototype.addScenes = function() {
 	let ch = this.dom.children;
 	for(let z = 0; z < ch.length; z++) {
 		if(ch[z].tagName == "scene") this.scenes.push(new Scene(ch[z], ch[z].getAttribute('id')));
-		else tems[ch[z].getAttribute('name')] = ch[z];
+		else if(ch[z].tagName == 'tem') tems[ch[z].getAttribute('name')] = ch[z];
+		else if(ch[z].tagName == 'assetPath') assetPath = ch[z].firstChild.nodeValue;
 	};
 };
 
@@ -164,7 +166,7 @@ Scene.prototype.play = function() {
 	this.showOptions();
 };
 
-gameGraph = new Game(loadXML('assets/game.xml'));
+gameGraph = new Game(loadXML(`src/game.xml`));
 gameGraph.initialize();
 bigGame.play();
 

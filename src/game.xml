@@ -1,4 +1,5 @@
 <game>
+	<assetPath>assets</assetPath>
 	<tem name="fail" style="color: #f00; font-size: 2.5em;">
 		FAIL
 	</tem>
