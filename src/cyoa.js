@@ -14,9 +14,9 @@ function elt(type,props,...children){let dom=document.createElement(type);if(pro
 
 function loadXML(url) {
 	let r = new XMLHttpRequest();
-	let p = new DOMParser();
 	r.open('GET', url, false);
 	r.send(null);
+	let p = new DOMParser();
 	return p.parseFromString(r.responseText, 'text/xml').children[0];
 }
 
